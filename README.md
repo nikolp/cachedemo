@@ -31,6 +31,7 @@ docker push philip11/cachedemo:latest
 
 ### Deploy and Run on EC2
 ```
+# Use Instance Connect or the ssh command given by EC2
 sudo yum update -y
 sudo yum install docker -y
 sudo service docker start
