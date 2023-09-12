@@ -18,4 +18,9 @@ public class MainController {
     Book getBook(@PathVariable int id) {
         return bookService.getBook(id);
     }
+
+    @GetMapping("/indirect/book/{id}")
+    Book getBookIndirect(@PathVariable int id) {
+        return bookService.getBookIndirectCall(id);
+    }
 }

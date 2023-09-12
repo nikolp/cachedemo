@@ -25,7 +25,7 @@ public class ApplicationConfiguration {
     @Bean
     public RedisCacheManagerBuilderCustomizer redisCacheManagerBuilderCustomizer() {
         return (builder) -> builder
-                .withCacheConfiguration("bookCache",
+                .withCacheConfiguration("books",
                         cacheConfiguration().entryTtl(Duration.ofSeconds(20)));
       }
 }

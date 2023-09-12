@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-@CacheConfig(cacheNames = "bookCache")
+@CacheConfig(cacheNames = "books")
 public class BookServiceImpl implements BookService {
     @Override
     @Cacheable
@@ -19,5 +19,10 @@ public class BookServiceImpl implements BookService {
         book.setTitle("Book" + id);
         book.setYear(2000 + id);
         return book;
+    }
+
+    @Override
+    public Book getBookIndirectCall(int id) {
+        return getBook(id);
     }
 }
