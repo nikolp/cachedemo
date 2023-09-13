@@ -1,5 +1,6 @@
 package com.example.cachedemo.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer;
 import org.springframework.cache.annotation.EnableCaching;
@@ -14,18 +15,21 @@ import java.time.Duration;
 @EnableCaching
 public class ApplicationConfiguration {
     @Bean
-    public RedisCacheConfiguration cacheConfiguration() {
+    public RedisCacheConfiguration cacheConfiguration(@Value("${redis.defaultTtlSec}") int ttlSec) {
         return RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofMinutes(60))
+                .entryTtl(Duration.ofSeconds(ttlSec))
                 .disableCachingNullValues()
-                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(
-                        new GenericJackson2JsonRedisSerializer()));
+                // Need this to do Json serialization. But otherwise just annotate your POJO with "implements Serializable"
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
     }
 
     @Bean
     public RedisCacheManagerBuilderCustomizer redisCacheManagerBuilderCustomizer() {
         return (builder) -> builder
-                .withCacheConfiguration("books",
-                        cacheConfiguration().entryTtl(Duration.ofSeconds(20)));
+                  .disableCreateOnMissingCache()
+                  // the below handled ok by property file
+//                .withCacheConfiguration("book-cache",
+//                        cacheConfiguration().entryTtl(Duration.ofSeconds(20))
+                ;
       }
 }
