@@ -5,7 +5,6 @@ import com.example.cachedemo.model.CacheUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.text.MatchesPattern;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +74,6 @@ class BookServiceImplTest {
     }
 
     @Test
-    @Disabled
     void whenUnknownCacheName_ThrowError() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             bookService.getBookDifferentCache(3);

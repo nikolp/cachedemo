@@ -26,20 +26,13 @@ public class ApplicationConfiguration {
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
     }
 
-    // Example of potentially useful customization but not needed for reasons below.
-    /*
     @Bean
     public RedisCacheManagerBuilderCustomizer redisCacheManagerBuilderCustomizer() {
         return (builder) -> builder
-                // the below causes problem for unit tests
-                // When there are too many @Test methods, even if you run them sequentially with @TestMethodOrder
-                // and clear the cache in @BeforeEach, seems like the single redis server cannot clear its
-                // statistics quickly enough. Since tests check statistics they interfere with each other.
-                // Adding Thread.sleep() requires too big of a window to run reliably.
+                // Avoid accidental usage of unknown caches
                 .disableCreateOnMissingCache()
                 // the below handled ok by cacheConfiguration() above + property file
-                .withCacheConfiguration("book-cache", cacheConfiguration().entryTtl(Duration.ofSeconds(60)))
+                // .withCacheConfiguration("book-cache", cacheConfiguration().entryTtl(Duration.ofSeconds(60)))
                 ;
       }
-     */
 }
