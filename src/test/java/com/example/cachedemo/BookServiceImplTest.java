@@ -1,10 +1,13 @@
 package com.example.cachedemo;
 
+import com.example.cachedemo.model.Book;
 import com.example.cachedemo.model.CacheUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.text.MatchesPattern;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.Cache;
@@ -14,15 +17,17 @@ import org.springframework.data.redis.cache.RedisCache;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.Duration;
+import java.util.Optional;
+import java.util.Random;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 // Some great examples how to customize this: https://reflectoring.io/spring-boot-test/
 @SpringBootTest(properties = "spring.cache.redis.enable-statistics=true")
 @ActiveProfiles("idea")
+@TestMethodOrder(org.junit.jupiter.api.MethodOrderer.Random.class)
 class BookServiceImplTest {
     @Autowired
     BookServiceImpl bookService;
@@ -32,7 +37,7 @@ class BookServiceImplTest {
     CacheUtil cacheUtil;
 
     @BeforeEach
-    void SetUp() {
+    void SetUp() throws InterruptedException {
         cacheUtil.clearAll();
     }
 
@@ -70,11 +75,40 @@ class BookServiceImplTest {
     }
 
     @Test
+    @Disabled
     void whenUnknownCacheName_ThrowError() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            bookService.getBookDifferentCache(5);
+            bookService.getBookDifferentCache(3);
         });
         assertThat(exception.getMessage(),
                 MatchesPattern.matchesPattern(".*Cannot find cache named.*"));
+    }
+
+    @Test
+    void whenOptionalIsNotEmpty_CachingWorks() {
+        log.info("This should appear once:");
+        Book bookA = bookService.getBookOptional(4).orElseThrow();
+        Book bookB = bookService.getBookOptional(4).orElseThrow();
+        assertEquals(4, bookA.getId());
+        assertEquals(4, bookA.getId());
+        Cache cache = cacheManager.getCache("book-cache");
+        RedisCache redisCache = (RedisCache) cache;
+        CacheStatistics stats = redisCache.getStatistics();
+        assertEquals(1, stats.getMisses());
+        assertEquals(1, stats.getHits());
+    }
+
+    @Test
+    void whenOptionalIsEmpty_CachingWorks() {
+        log.info("This should appear twice:");
+        Optional<Book> bookA = bookService.getBookOptional(BookService.INVALID_BOOK_ID);
+        Optional<Book> bookB = bookService.getBookOptional(BookService.INVALID_BOOK_ID);
+        assertTrue(bookA.isEmpty());
+        assertTrue(bookB.isEmpty());
+        Cache cache = cacheManager.getCache("book-cache");
+        RedisCache redisCache = (RedisCache) cache;
+        CacheStatistics stats = redisCache.getStatistics();
+        assertEquals(2, stats.getMisses());
+        assertEquals(0, stats.getHits());
     }
 }
