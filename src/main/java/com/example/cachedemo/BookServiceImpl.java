@@ -6,14 +6,16 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Slf4j
 @Service
 @CacheConfig(cacheNames = "book-cache")
 public class BookServiceImpl implements BookService {
-    @Override
-    @Cacheable
-    public Book getBook(int id) {
-        log.info("Expensive call for " + id);
+    private Book makeBook(int id) {
+        if (id == BookService.INVALID_BOOK_ID) {
+            return null;
+        }
         Book book = new Book();
         book.setId(id);
         book.setTitle("Book" + id);
@@ -22,8 +24,25 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Cacheable
+    public Book getBook(int id) {
+        log.info("Expensive call for " + id);
+        return makeBook(id);
+    }
+
+    @Override
     public Book getBookIndirectCall(int id) {
         return getBook(id);
+    }
+
+    @Cacheable(unless="#result == null")
+    public Optional<Book> getBookOptional(int id) {
+        log.info("Expensive getBookOptional: " + id);
+        Book book = makeBook(id);
+        if (book == null) {
+            return Optional.empty();
+        }
+        return Optional.of(book);
     }
 
     @Override
