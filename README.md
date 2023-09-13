@@ -70,3 +70,19 @@ curl http://0.0.0.0/book/3
 # Or get Pubic IPv4 and try same thing externally, like e.g.
 curl http://3.80.205.78/book/50
 ```
+
+### More on local redis
+As an alternative to docker
+```
+brew install redis
+```
+This will remind you
+```
+brew services start redis
+Or, if you don't want/need a background service you can just run:
+/opt/homebrew/opt/redis/bin/redis-server /opt/homebrew/etc/redis.conf
+```
+But for now just using this to run
+```
+redis-cli
+```
