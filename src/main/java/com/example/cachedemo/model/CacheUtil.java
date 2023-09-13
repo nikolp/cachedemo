@@ -19,7 +19,8 @@ public class CacheUtil {
             RedisCache redisCache = (RedisCache) cache;
             Duration expiry = redisCache.getCacheConfiguration().getTtl();
             log.info("Examining cache: " + cacheName + " with expiry " + expiry);
-            cache.clear();
+            redisCache.clear();
+            redisCache.clearStatistics();
             log.info("Cleared it");
         }
     }
