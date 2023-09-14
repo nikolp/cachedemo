@@ -15,11 +15,11 @@ public class CacheDemoApplication {
 		SpringApplication.run(CacheDemoApplication.class, args);
 	}
 
-	@Bean
-	CommandLineRunner demo(CacheUtil cacheUtil) {
-		return args -> {
-			cacheUtil.clearAll();
-		};
-	}
+//	@Bean
+//	CommandLineRunner demoClearCachesOnStartup(CacheUtil cacheUtil) {
+//		return args -> {
+//			cacheUtil.clearAll();
+//		};
+//	}
 
 }

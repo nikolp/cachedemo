@@ -14,8 +14,10 @@ https://www.baeldung.com/spring-setting-ttl-value-cache
 docker run -p 5000:8080 cachedemo:latest
 
 ### Local testing in IntelliJ
-* Your **CacheDemoApplication** "Edit Config" should give environment 
-variable **SPRING_PROFILES_ACTIVE=idea**
+* Your **CacheDemoApplication** "Edit Config" should 
+  * Have extra command line arg **--spring.profiles.active=local**
+  * Or give environment 
+  variable **SPRING_PROFILES_ACTIVE=local**
 * Run it and then hit http://localhost:8080/book/10
 * You can also run/debug the unit tests (but mvn package below will also run them)
 
@@ -29,7 +31,7 @@ docker run --name my-redis -p 6379:6379 -d --network mynetwork redis
 mvn clean package
 docker buildx build -t cachedemo:latest .
 # playing with port 5000 just for kicks to see port forwarding working
-docker run -p 5000:8080 --network mynetwork cachedemo:latest
+docker run -e SPRING_PROFILES_ACTIVE=localdocker -p 5000:8080 --network mynetwork cachedemo:latest
 # confirm that it works by hitting http://localhost:5000/book/10
 # then build it for deployment
 docker buildx build --platform=linux/amd64 -t cachedemo:latest .
@@ -61,7 +63,7 @@ sudo service docker start
 sudo docker network create mynetwork
 sudo docker run --name my-redis -p 6379:6379 -d --network mynetwork redis
 # start up app that uses it
-sudo docker run -d -p 80:8080 --network mynetwork --name cachedemo philip11/cachedemo:latest
+sudo docker run -d -p 80:8080 -e SPRING_PROFILES_ACTIVE=localdocker --network mynetwork --name cachedemo philip11/cachedemo:latest
 sudo docker ps
 sudo docker logs cachedemo
 # MUST use HTTP (not S). MUST use port 80.

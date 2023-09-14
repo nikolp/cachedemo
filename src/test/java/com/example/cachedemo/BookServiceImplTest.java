@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Slf4j
 // Some great examples how to customize this: https://reflectoring.io/spring-boot-test/
 @SpringBootTest(properties = "spring.cache.redis.enable-statistics=true")
-@ActiveProfiles("idea")
+@ActiveProfiles("local")
 @TestMethodOrder(org.junit.jupiter.api.MethodOrderer.Random.class)
 class BookServiceImplTest {
     @Autowired
