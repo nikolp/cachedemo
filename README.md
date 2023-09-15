@@ -11,7 +11,6 @@ https://www.baeldung.com/spring-boot-evict-cache
 
 https://www.baeldung.com/spring-setting-ttl-value-cache
 
-docker run -p 5000:8080 cachedemo:latest
 
 ### Local testing in IntelliJ
 * Your **CacheDemoApplication** "Edit Config" should 
@@ -49,7 +48,7 @@ docker push philip11/cachedemo:latest
 * Arch: 64-bit (x86)
 * Type: t2.micro (free tier eligible)
 * Keypair: MyBeanstalkEc2
-* Select "existing security group" = launch-wizard-1
+* Select "existing security group" = allow-all
   (It allows all ssh, http and https traffic)
 * "Launch Instance"
 
@@ -59,11 +58,19 @@ docker push philip11/cachedemo:latest
 sudo yum update -y
 sudo yum install docker -y
 sudo service docker start
-# start up the cache
+
+# Option 1 Local: start up the cache
 sudo docker network create mynetwork
 sudo docker run --name my-redis -p 6379:6379 -d --network mynetwork redis
 # start up app that uses it
 sudo docker run -d -p 80:8080 -e SPRING_PROFILES_ACTIVE=localdocker --network mynetwork --name cachedemo philip11/cachedemo:latest
+
+# Option 2 Elasticache: start up the Redis cluster in AWS Console
+# In a few minutes, note the "primeary endpoint"
+# start up app that uses it
+sudo docker run -d -p 80:8080 -e REDIS_HOST=<primary_endpoint_without_port> --network mynetwork --name cachedemo philip11/cachedemo:latest
+
+
 sudo docker ps
 sudo docker logs cachedemo
 # MUST use HTTP (not S). MUST use port 80.
