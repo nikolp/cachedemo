@@ -68,7 +68,7 @@ sudo docker run -d -p 80:8080 -e SPRING_PROFILES_ACTIVE=localdocker --network my
 # Option 2 Elasticache: start up the Redis cluster in AWS Console
 # In a few minutes, note the "primeary endpoint"
 # start up app that uses it
-sudo docker run -d -p 80:8080 -e REDIS_HOST=<primary_endpoint_without_port> --network mynetwork --name cachedemo philip11/cachedemo:latest
+sudo docker run -d -p 80:8080 -e REDIS_HOST=<primary_endpoint_without_port> --name cachedemo philip11/cachedemo:latest
 
 
 sudo docker ps
