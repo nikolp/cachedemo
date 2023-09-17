@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.EnableLoadTimeWeaving;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
@@ -12,7 +14,8 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 import java.time.Duration;
 
 @SpringBootConfiguration
-@EnableCaching
+@EnableCaching(mode=AdviceMode.ASPECTJ)
+@EnableLoadTimeWeaving
 public class ApplicationConfiguration {
     @Value("${redis.defaultTtlSec}")
     int ttlSec;
