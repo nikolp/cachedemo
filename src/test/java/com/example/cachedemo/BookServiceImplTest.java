@@ -43,8 +43,8 @@ class BookServiceImplTest {
     @Test
     void whenCallingFromOutside_Works() {
         log.info("This should appear once:");
-        bookService.getBook(1);
-        bookService.getBook(1);
+        bookService.getBook("1");
+        bookService.getBook("1");
         Cache cache = cacheManager.getCache("book-cache");
         RedisCache redisCache = (RedisCache) cache;
         CacheStatistics stats = redisCache.getStatistics();
@@ -55,8 +55,8 @@ class BookServiceImplTest {
     @Test
     void whenCallingFromWithinSameClass_NoCachingLogic() {
         log.info("This should appear twice:");
-        bookService.getBookIndirectCall(2);
-        bookService.getBookIndirectCall(2);
+        bookService.getBookIndirectCall("2");
+        bookService.getBookIndirectCall("2");
         Cache cache = cacheManager.getCache("book-cache");
         RedisCache redisCache = (RedisCache) cache;
         CacheStatistics stats = redisCache.getStatistics();
@@ -76,7 +76,7 @@ class BookServiceImplTest {
     @Test
     void whenUnknownCacheName_ThrowError() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            bookService.getBookDifferentCache(3);
+            bookService.getBookDifferentCache("3");
         });
         assertThat(exception.getMessage(),
                 MatchesPattern.matchesPattern(".*Cannot find cache named.*"));
@@ -85,10 +85,10 @@ class BookServiceImplTest {
     @Test
     void whenOptionalIsNotEmpty_CachingWorks() {
         log.info("This should appear once:");
-        Book bookA = bookService.getBookOptional(4).orElseThrow();
-        Book bookB = bookService.getBookOptional(4).orElseThrow();
-        assertEquals(4, bookA.getId());
-        assertEquals(4, bookA.getId());
+        Book bookA = bookService.getBookOptional("4").orElseThrow();
+        Book bookB = bookService.getBookOptional("4").orElseThrow();
+        assertEquals("4", bookA.getId());
+        assertEquals("4", bookA.getId());
         Cache cache = cacheManager.getCache("book-cache");
         RedisCache redisCache = (RedisCache) cache;
         CacheStatistics stats = redisCache.getStatistics();

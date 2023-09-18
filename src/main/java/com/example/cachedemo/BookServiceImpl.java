@@ -12,31 +12,31 @@ import java.util.Optional;
 @Service
 @CacheConfig(cacheNames = "book-cache")
 public class BookServiceImpl implements BookService {
-    private Book makeBook(int id) {
+    private Book makeBook(String id) {
         if (id == BookService.INVALID_BOOK_ID) {
             return null;
         }
         Book book = new Book();
         book.setId(id);
         book.setTitle("Book" + id);
-        book.setYear(2000 + id);
+        book.setYear(2000 + Integer.parseInt(id));
         return book;
     }
 
     @Override
     @Cacheable
-    public Book getBook(int id) {
+    public Book getBook(String id) {
         log.info("Expensive call for " + id);
         return makeBook(id);
     }
 
     @Override
-    public Book getBookIndirectCall(int id) {
+    public Book getBookIndirectCall(String id) {
         return getBook(id);
     }
 
     @Cacheable(unless="#result == null")
-    public Optional<Book> getBookOptional(int id) {
+    public Optional<Book> getBookOptional(String id) {
         log.info("Expensive getBookOptional: " + id);
         Book book = makeBook(id);
         if (book == null) {
@@ -47,7 +47,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Cacheable("different-cache")
-    public Book getBookDifferentCache(int id) {
+    public Book getBookDifferentCache(String id) {
         return getBook(id);
     }
 }

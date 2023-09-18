@@ -5,9 +5,9 @@ import org.springframework.cache.annotation.Cacheable;
 
 public interface BookService {
     // A useful constant for creating null books
-    public static int INVALID_BOOK_ID = 99;
+    public static String INVALID_BOOK_ID = "99";
 
-    Book getBook(int id);
-    Book getBookIndirectCall(int id);
-    Book getBookDifferentCache(int id);
+    Book getBook(String id);
+    Book getBookIndirectCall(String id);
+    Book getBookDifferentCache(String id);
 }

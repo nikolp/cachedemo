@@ -15,12 +15,12 @@ public class MainController {
     private BookService bookService;
 
     @GetMapping("/book/{id}")
-    Book getBook(@PathVariable int id) {
+    Book getBook(@PathVariable String id) {
         return bookService.getBook(id);
     }
 
     @GetMapping("/indirect/book/{id}")
-    Book getBookIndirect(@PathVariable int id) {
+    Book getBookIndirect(@PathVariable String id) {
         return bookService.getBookIndirectCall(id);
     }
 }
