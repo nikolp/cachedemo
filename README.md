@@ -52,6 +52,10 @@ docker push philip11/cachedemo:latest
   (It allows all ssh, http and https traffic)
 * "Launch Instance"
 
+### Launch Instance From Template
+All of the above settings (and some of the install commands below)
+have been added to a launch template for my own ease of use.
+
 ### Deploy and Run on EC2
 ```
 # Use Instance Connect or the ssh command given by EC2
