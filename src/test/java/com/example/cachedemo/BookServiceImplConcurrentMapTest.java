@@ -40,7 +40,7 @@ class BookServiceImplConcurrentMapTest {
     }
 
     @Test
-    void whenCallingFromOutside_UserConcurrentHashMap() {
+    void whenCallingFromOutside_UsesConcurrentHashMap() {
         log.info("This should appear once:");
         bookService.getBook("1");
         bookService.getBook("1");
