@@ -35,6 +35,28 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
+			<groupId>it.ozimov</groupId>
+			<artifactId>embedded-redis</artifactId>
+			<version>0.7.3</version>
+			<exclusions>
+				<exclusion>
+					<!-- Another thing that used to cause warnings
+					https://github.com/camunda/zeebe/commit/bbcdeb04907530809955bed882bb2ed43886ad28
+					-->
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+				<exclusion>
+					<!-- This is an implementation of sl4j that we already have
+					https://www.baeldung.com/slf4j-classpath-multiple-bindings
+					-->
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-simple</artifactId>
+				</exclusion>
+			</exclusions>
+<!--			<scope>test</scope>-->
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>

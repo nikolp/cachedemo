@@ -4,16 +4,16 @@ import com.example.cachedemo.model.Book;
 import com.example.cachedemo.model.CacheUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.text.MatchesPattern;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.cache.CacheStatistics;
 import org.springframework.data.redis.cache.RedisCache;
 import org.springframework.test.context.ActiveProfiles;
+import redis.embedded.RedisServer;
 
 import java.time.Duration;
 import java.util.Optional;
@@ -27,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(properties = "spring.cache.redis.enable-statistics=true")
 @ActiveProfiles("local")
 @TestMethodOrder(org.junit.jupiter.api.MethodOrderer.Random.class)
+@Import(TestConfigurationEmbeddedRedis.class)
 class BookServiceImplTest {
     @Autowired
     BookServiceImpl bookService;
