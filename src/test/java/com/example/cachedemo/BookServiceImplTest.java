@@ -13,11 +13,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.cache.CacheStatistics;
 import org.springframework.data.redis.cache.RedisCache;
 import org.springframework.test.context.ActiveProfiles;
-import redis.embedded.RedisServer;
 
 import java.time.Duration;
 import java.util.Optional;
-import java.util.Random;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 // Some great examples how to customize this: https://reflectoring.io/spring-boot-test/
 @SpringBootTest(properties = "spring.cache.redis.enable-statistics=true")
 @ActiveProfiles("local")
-@TestMethodOrder(org.junit.jupiter.api.MethodOrderer.Random.class)
+@TestMethodOrder(org.junit.jupiter.api.MethodOrderer.Random.class)  // ensure sequential order since shared cache
 @Import(TestConfigurationEmbeddedRedis.class)
 class BookServiceImplTest {
     @Autowired
