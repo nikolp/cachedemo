@@ -25,7 +25,7 @@ import static org.hamcrest.Matchers.contains;
 @SpringBootTest(properties = "spring.cache.type=simple")
 @ActiveProfiles("local")
 @TestMethodOrder(MethodOrderer.Random.class)  // ensure sequential order since shared cache
-@Import(TestConfigurationEmbeddedRedis.class)
+// @Import(TestConfigurationEmbeddedRedis.class)  // this has to be turned off unless we find way to start on random port
 class BookServiceImplConcurrentMapTest {
     @Autowired
     BookServiceImpl bookService;
