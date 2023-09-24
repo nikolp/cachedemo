@@ -1,0 +1,11 @@
+# For aws
+spring:
+  cache:
+    type: redis
+
+cloud:
+  aws:
+    elasticache:
+      clusters:
+        - name: book-cache
+          expiration: 100

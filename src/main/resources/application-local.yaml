@@ -1,0 +1,8 @@
+# For redis server locally installed or running locally in docker, while app running non-docker
+spring:
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  cache:
+    cache-names: book-cache

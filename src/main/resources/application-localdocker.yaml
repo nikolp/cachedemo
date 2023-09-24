@@ -1,3 +1,6 @@
 # For redis server locally installed or running locally in docker, while app running docker
-spring.data.redis.host=my-redis
-spring.data.redis.port=6379
+spring:
+  data:
+    redis:
+      host: my-redis
+      port: 6379

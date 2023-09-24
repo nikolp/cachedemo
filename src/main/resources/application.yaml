@@ -5,21 +5,24 @@
 # spring.cache.type=redis
 
 # set this via "docker run -e REDIS_HOST=<your_redis_host> ..."
-spring.data.redis.host=${REDIS_HOST}
-spring.data.redis.port=6379
+# spring.data.redis.host=${REDIS_HOST}
+# spring.data.redis.port=6379
 
 # Pre-configure these caches.
 # Still need java based disableCreateOnMissingCache() to prevent on-demand cache creation.
-spring.cache.cache-names=book-cache
+#spring:
+#  cache:
+#    cache-names: book-cache
 
 # does not work yet, google search says something about it
 # spring.cache.redis.time-to-live=PT20S
 # so instead doing a custom property and handling it in our own java config
-redis.defaultTtlSec=20
+redis:
+  defaultTtlSec: 20
 
 # Needed for unit tests. Add it under src/test/resources.
 # Or set it directly in your @SpringBootTest(properties = {"spring.cache.type=redis"})
 # spring.cache.redis.enable-statistics = true
 
 # Instead of crashing, stay up if cache is unavailable
-keep-going-when-cache-fails=true
+keep-going-when-cache-fails: true

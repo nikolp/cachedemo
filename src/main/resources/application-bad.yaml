@@ -1,0 +1,8 @@
+# For testing resilience when Redis connection is down (bad port number below).
+spring:
+  data:
+    redis:
+      host: localhost
+      port: 1111
+  cache:
+    cache-names: book-cache

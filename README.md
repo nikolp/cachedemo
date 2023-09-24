@@ -72,7 +72,8 @@ sudo docker run -d -p 80:8080 -e SPRING_PROFILES_ACTIVE=localdocker --network my
 # Option 2 Elasticache: start up the Redis cluster in AWS Console (see Readme)
 # In a few minutes, note the "primeary endpoint"
 # start up app that uses it
-sudo docker run -d -p 80:8080 -e REDIS_HOST=<primary_endpoint_without_port> --name cachedemo philip11/cachedemo:latest
+REDIS_HOST=<primary_endpoint_without_port>
+sudo docker run -d -p 80:8080 -e REDIS_HOST --name cachedemo philip11/cachedemo:latest
 
 
 sudo docker ps
@@ -104,7 +105,7 @@ redis-cli
 * Create Redis Cluster
 * Configure and create new cluster (instead of the "easy" option)
 * Cluster mode: disabled
-* Name: my-redis-cluster
+* Name: book-cache
 * Node type: cache.t2.micro
 * Number of replicas: 1 (for example, could even be 0)
 * Subnet group: choose existing (was previously created)
