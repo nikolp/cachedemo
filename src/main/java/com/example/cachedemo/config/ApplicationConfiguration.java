@@ -17,11 +17,15 @@ public class ApplicationConfiguration {
     @Value("${redis.defaultTtlSec}")
     int ttlSec;
 
+    @Value("${spring.cache.redis.key-prefix:}")
+    String keyPrefix;
+
     @Bean
     public RedisCacheConfiguration cacheConfiguration() {
         return RedisCacheConfiguration.defaultCacheConfig()
                 .entryTtl(Duration.ofSeconds(ttlSec))
                 .disableCachingNullValues()
+                .prefixCacheNameWith(keyPrefix)
                 // Need this to do Json serialization. But otherwise just annotate your POJO with "implements Serializable"
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
     }
