@@ -70,10 +70,9 @@ sudo docker run --name my-redis -p 6379:6379 -d --network mynetwork redis
 sudo docker run -d -p 80:8080 -e SPRING_PROFILES_ACTIVE=localdocker --network mynetwork --name cachedemo philip11/cachedemo:latest
 
 # Option 2 Elasticache: start up the Redis cluster in AWS Console (see Readme)
-# In a few minutes, note the "primeary endpoint"
+# In a few minutes, note the "primary endpoint"
 # start up app that uses it
 sudo docker run -d -p 80:8080 -e REDIS_HOST=<primary_endpoint_without_port> --name cachedemo philip11/cachedemo:latest
-
 
 sudo docker ps
 sudo docker logs cachedemo
@@ -83,6 +82,9 @@ curl http://0.0.0.0/book/3
 # Or get Pubic IPv4 and try same thing externally, like e.g.
 curl http://3.80.205.78/book/50
 ```
+
+### Deploy and Run on EC2 with CloudFormation
+See ```cloud-form.yml``` and read the file comments on how to use it.
 
 ### More on local redis
 As an alternative to docker
