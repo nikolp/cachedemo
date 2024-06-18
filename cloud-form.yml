@@ -14,6 +14,7 @@
 # Then
 # curl ec2-54-80-71-114.compute-1.amazonaws.com/book/15
 #
+# DO NOT FORGET TO DELETE RESOURCES WHEN DONE
 # aws cloudformation delete-stack --stack-name ${STACK}
 #
 AWSTemplateFormatVersion: '2010-09-09'
