@@ -6,7 +6,7 @@
 #  --template-body file://cloud-form.yml
 #  --parameters "ParameterKey=KeyName,ParameterValue=MyBeanstalkEc2" "ParameterKey=InstanceType,ParameterValue=t2.micro"
 #
-# aws cloudformation describe-stacks --stack-name ${STACK}--query 'Stacks[0].Outputs'
+# aws cloudformation describe-stacks --stack-name ${STACK} --query 'Stacks[0].Outputs'
 #
 # aws cloudformation describe-stacks --stack-name ${STACK} --query "Stacks[0].Outputs[?OutputKey=='PublicDNS'].OutputValue" --output text
 #
@@ -71,6 +71,7 @@ Resources:
         - Key: Name
           Value: MyApp
       InstanceType: !Ref 'InstanceType'
+      # For illustration purposes, attach two security groups, one created below and one pre-existing
       SecurityGroups: [!Ref 'InstanceSecurityGroup', 'allow-all']
       KeyName: !Ref 'KeyName'
       ImageId: !Ref 'LatestAmiId'
