@@ -1,4 +1,4 @@
-## Caching exploration with REDIS
+## Caching exploration with REDIS including CloudFormation and Terraform
 
 ### References
 https://reflectoring.io/spring-cloud-aws-redis/
