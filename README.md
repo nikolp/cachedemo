@@ -86,6 +86,17 @@ curl http://3.80.205.78/book/50
 ### Deploy and Run on EC2 with CloudFormation
 See ```cloud-form.yml``` and read the file comments on how to use it.
 
+### Deploy and Run on EC2 with Terraform
+See 
+```
+cd terraform
+terraform init
+terraform apply
+# above command will output a sample URL that you can hit
+# finally remember to shut down everything
+terraform destroy -auto-approve
+``` 
+
 ### More on local redis
 As an alternative to docker
 ```
