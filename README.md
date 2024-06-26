@@ -13,26 +13,39 @@ https://www.baeldung.com/spring-setting-ttl-value-cache
 
 
 ### Local testing in IntelliJ
+* One time thing, colima needed to run docker 
+```colima start```
+* Start redis via docker
+```docker run --name my-redis -p 6379:6379 -d redis```
+
 * Your **CacheDemoApplication** "Edit Config" should 
   * Have extra command line arg **--spring.profiles.active=local**
   * Or give environment 
   variable **SPRING_PROFILES_ACTIVE=local**
 * Run it and then hit http://localhost:8080/book/10
 * You can also run/debug the unit tests (but mvn package below will also run them)
+* You can `docker stop my-redis` to confirm error handling as the app should log caching errors but not crash
 
 
 ### Build and test 
 ```
 # one time thing
+colima start
 docker network create mynetwork
 # start redis
 docker run --name my-redis -p 6379:6379 -d --network mynetwork redis
+# The command below fails as of Jun 2024.
+# Unit test use embedded redis and the current version of embedded redis is broken.
+# Option: point to a fork of embedded redis that works, see https://stackoverflow.com/a/77877991
+# Option: comment out this line in the test: @Import(TestConfigurationEmbeddedRedis.class)
+# in which case tests will rely on redis started above via docker (not ideal as no proper isolation)
+# Option: skip the tests via mvn clean package -DskipTests
 mvn clean package
-docker buildx build -t cachedemo:latest .
+sudo docker buildx build -t cachedemo:latest .
 # playing with port 5000 just for kicks to see port forwarding working
 docker run -e SPRING_PROFILES_ACTIVE=localdocker -p 5000:8080 --network mynetwork cachedemo:latest
 # confirm that it works by hitting http://localhost:5000/book/10
-# then build it for deployment
+# then build it for deployment on Amazon EC2 typical servers which are amd64 not arm64 like my local Mac
 docker buildx build --platform=linux/amd64 -t cachedemo:latest .
 docker tag cachedemo:latest philip11/cachedemo:latest
 # the login below not needed often
@@ -85,9 +98,10 @@ curl http://3.80.205.78/book/50
 
 ### Deploy and Run on EC2 with CloudFormation
 See ```cloud-form.yml``` and read the file comments on how to use it.
+To build a more interesting tech stack redis and app are running on different ec2 instances.
 
 ### Deploy and Run on EC2 with Terraform
-See 
+See sample commands below
 ```
 cd terraform
 terraform init
